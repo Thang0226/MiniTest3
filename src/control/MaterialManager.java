@@ -31,9 +31,7 @@ public class MaterialManager {
 			}
 		}
 		// print sorted materials
-		for (Material item : list) {
-			System.out.println("\t" + item);
-		}
+		printMaterials(list);
 	}
 
 	public static double getTotalDiscount(Material[] list) {
@@ -122,14 +120,14 @@ public class MaterialManager {
 
 	public static void changeMaterial(Material[] list) {
 		String id = inputID();
-		for (int i = 0; i < list.length; i++) {
-			if (list[i].getId().equals(id)) {
-				System.out.println(list[i]);
+		for (Material material : list) {
+			if (material.getId().equals(id)) {
+				System.out.println(material);
 
-				if (list[i] instanceof Meat) {
-					changeMeat(list[i]);
-				} else if (list[i] instanceof CrispyFlour) {
-					changeFlour(list[i]);
+				if (material instanceof Meat) {
+					changeMeat(material);
+				} else if (material instanceof CrispyFlour) {
+					changeFlour(material);
 				}
 				break;
 			}
