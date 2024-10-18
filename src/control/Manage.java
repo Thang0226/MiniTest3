@@ -6,58 +6,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Manage {
-	public static void main(String[] args) {
-		Material[] list = new Material[50];
-		list[0] = new CrispyFlour("001", "Aji-Quick", "2024-03-04", 123, 3);
-		list[1] = new CrispyFlour("002", "Meizan", "2023-04-05", 45, 4);
-		list[2] = new CrispyFlour("003", "Tai Ky", "2024-05-06", 110, 5);
-		list[3] = new CrispyFlour("004", "Vinh Thuan", "2022-01-03", 30, 6);
-		list[4] = new CrispyFlour("005", "Beksul", "2023-12-04", 80, 7);
-		list[5] = new Meat("006", "Chicken", "2024-10-15", 60, 2.5);
-		list[6] = new Meat("007", "Pork", "2024-10-14", 100, 10);
-		list[7] = new Meat("008", "Beef", "2024-10-08", 90, 8);
-		list[8] = new Meat("009", "Fish", "2024-10-09", 120, 5);
-		list[9] = new Meat("010", "Kobe beef", "2024-10-17", 300, 1);
-
-		System.out.println("\nTotal money for materials: " + getMoneySum(list) + " VND");
-		System.out.println("\nList of materials sorted descending based on cost:");
-		printSortedMaterials(list);
-		System.out.println("\nTotal discounted money: " + getTotalDiscount(list) + " VND");
-
-		Scanner input = new Scanner(System.in);
-		int choice;
-		while(true) {
-			System.out.println("""
-				\nMenu:
-					1. Add new material
-					2. Change a material
-					3. Delete a material
-					4. Show all materials
-					0. Exit
-				Enter your choice:""");
-			choice = input.nextInt();
-			switch(choice) {
-				case 1:
-					addNewMaterial(list);
-					break;
-				case 2:
-					changeMaterial(list);
-					break;
-				case 3:
-					deleteMaterial(list);
-					break;
-				case 4:
-					printMaterials(list);
-					break;
-				case 0:
-					System.exit(0);
-				default:
-					System.out.println("Not a choice!");
-			}
-		}
-	}
-
-	private static double getMoneySum(Material[] list) {
+	public static double getMoneySum(Material[] list) {
 		int n = getNumberOfElements(list);
 		double sum = 0;
 		for (int i = 0; i < n; i++) {
@@ -66,7 +15,7 @@ public class Manage {
 		return Math.round(sum * 100000.0) / 100.0;
 	}
 
-	private static void printSortedMaterials(Material[] list) {
+	public static void printSortedMaterials(Material[] list) {
 		int n = getNumberOfElements(list);
 		Material[] no_null_list = new Material[n];
 		System.arraycopy(list, 0, no_null_list, 0, n);
@@ -77,7 +26,7 @@ public class Manage {
 		}
 	}
 
-	private static double getTotalDiscount(Material[] list) {
+	public static double getTotalDiscount(Material[] list) {
 		int n = getNumberOfElements(list);
 		double sum = 0;
 		for (int i = 0; i < n; i++) {
@@ -86,7 +35,7 @@ public class Manage {
 		return Math.round(sum * 100000.0) / 100.0;
 	}
 
-	private static int getNumberOfElements(Material[] list) {
+	public static int getNumberOfElements(Material[] list) {
 		int n = 0;
 		for (Material item : list) {
 			if (item != null) {
@@ -98,7 +47,7 @@ public class Manage {
 		return n;
 	}
 
-	private static void addNewMaterial(Material[] list) {
+	public static void addNewMaterial(Material[] list) {
 		int n = getNumberOfElements(list);
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter kind of material (Meat/Crispy Flour): ");
@@ -136,7 +85,7 @@ public class Manage {
 		}
 	}
 
-	private static void changeMaterial(Material[] list) {
+	public static void changeMaterial(Material[] list) {
 		int n = getNumberOfElements(list);
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter id of material you want to change: ");
@@ -148,10 +97,10 @@ public class Manage {
 
 				if (list[i] instanceof Meat) {
 					System.out.println("""
-							Choose property to change:
-							1. Cost
-							2. Weight
-							Enter your choice:""");
+						Choose property to change:
+						1. Cost
+						2. Weight
+						Enter your choice:""");
 					int choice = input.nextInt();
 					String s = "";
 					switch (choice) {
@@ -174,10 +123,10 @@ public class Manage {
 
 				} else if (list[i] instanceof CrispyFlour) {
 					System.out.println("""
-							Choose property to change:
-							1. Cost
-							2. Quantity
-							Enter your choice:""");
+						Choose property to change:
+						1. Cost
+						2. Quantity
+						Enter your choice:""");
 					int choice = input.nextInt();
 					String s = "";
 					switch (choice) {
@@ -203,7 +152,7 @@ public class Manage {
 		}
 	}
 
-	private static void deleteMaterial(Material[] list) {
+	public static void deleteMaterial(Material[] list) {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter id of material you want to delete: ");
 		String id = input.nextLine();
@@ -220,7 +169,7 @@ public class Manage {
 		System.out.println("Material " + id + " deleted!");
 	}
 
-	private static void printMaterials(Material[] list) {
+	public static void printMaterials(Material[] list) {
 		int n = getNumberOfElements(list);
 		System.out.println("Materials in the list:");
 		for (int i = 0; i < n; i++) {
