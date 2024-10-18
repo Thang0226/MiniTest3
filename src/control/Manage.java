@@ -54,35 +54,44 @@ public class Manage {
 		String kind = input.nextLine();
 
 		if (kind.equals("Meat")) {
-			System.out.print("\tEnter id: ");
-			String id = input.nextLine();
-			System.out.print("\tEnter name: ");
-			String name = input.nextLine();
-			System.out.print("\tEnter manufacturing date (YYYY-MM-DD): ");
-			String date = input.next();
-			System.out.print("\tEnter cost per kg (thousand VND): ");
-			int cost = input.nextInt();
-			System.out.print("\tEnter weight (kg): ");
-			double weight = input.nextDouble();
-
-			list[n] = new Meat(id, name, date, cost, weight);
-			System.out.println("New meat material added!");
-
+			addNewMeatMaterial(list, n);
 		} else if (kind.equals("Crispy Flour")) {
-			System.out.print("\tEnter id: ");
-			String id = input.nextLine();
-			System.out.print("\tEnter name: ");
-			String name = input.nextLine();
-			System.out.print("\tEnter manufacturing date (YYYY-MM-DD): ");
-			String date = input.next();
-			System.out.print("\tEnter cost per pack (thousand VND): ");
-			int cost = input.nextInt();
-			System.out.print("\tEnter quantity: ");
-			int quantity = input.nextInt();
-
-			list[n] = new CrispyFlour(id, name, date, cost, quantity);
-			System.out.println("New crispy flour material added!");
+			addNewCrispyFlourMaterial(list, n);
 		}
+	}
+
+	public static void addNewMeatMaterial(Material[] list, int n) {
+		Scanner input = new Scanner(System.in);
+		System.out.print("\tEnter id: ");
+		String id = input.nextLine();
+		System.out.print("\tEnter name: ");
+		String name = input.nextLine();
+		System.out.print("\tEnter manufacturing date (YYYY-MM-DD): ");
+		String date = input.next();
+		System.out.print("\tEnter cost per kg (thousand VND): ");
+		int cost = input.nextInt();
+		System.out.print("\tEnter weight (kg): ");
+		double weight = input.nextDouble();
+
+		list[n] = new Meat(id, name, date, cost, weight);
+		System.out.println("New meat material: " + list[n].getName() + " added!");
+	}
+
+	public static void addNewCrispyFlourMaterial(Material[] list, int n) {
+		Scanner input = new Scanner(System.in);
+		System.out.print("\tEnter id: ");
+		String id = input.nextLine();
+		System.out.print("\tEnter name: ");
+		String name = input.nextLine();
+		System.out.print("\tEnter manufacturing date (YYYY-MM-DD): ");
+		String date = input.next();
+		System.out.print("\tEnter cost per pack (thousand VND): ");
+		int cost = input.nextInt();
+		System.out.print("\tEnter quantity: ");
+		int quantity = input.nextInt();
+
+		list[n] = new CrispyFlour(id, name, date, cost, quantity);
+		System.out.println("New crispy flour material: " + list[n].getName() + " added!");
 	}
 
 	public static void changeMaterial(Material[] list) {
@@ -96,60 +105,69 @@ public class Manage {
 				System.out.println(list[i]);
 
 				if (list[i] instanceof Meat) {
-					System.out.println("""
-						Choose property to change:
-						1. Cost
-						2. Weight
-						Enter your choice:""");
-					int choice = input.nextInt();
-					String s = "";
-					switch (choice) {
-						case 1:
-							System.out.print("Enter new cost per kg (thousand VND): ");
-							int newCost = input.nextInt();
-							list[i].setCost(newCost);
-							s = "Cost";
-							break;
-						case 2:
-							System.out.print("Enter new weight (kg): ");
-							double newWeight = input.nextDouble();
-							((Meat) list[i]).setWeight(newWeight);
-							s = "Weight";
-							break;
-						default:
-							System.out.println("Not a choice!");
-					}
-					System.out.println("Meet material " + s + " changed!");
-
+					changeMeatMaterial(list[i]);
 				} else if (list[i] instanceof CrispyFlour) {
-					System.out.println("""
-						Choose property to change:
-						1. Cost
-						2. Quantity
-						Enter your choice:""");
-					int choice = input.nextInt();
-					String s = "";
-					switch (choice) {
-						case 1:
-							System.out.print("Enter new cost per pack (thousand VND): ");
-							int newCost = input.nextInt();
-							list[i].setCost(newCost);
-							s = "Cost";
-							break;
-						case 2:
-							System.out.print("Enter new quantity: ");
-							int newQuantity = input.nextInt();
-							((CrispyFlour) list[i]).setQuantity(newQuantity);
-							s = "Quantity";
-							break;
-						default:
-							System.out.println("Not a choice!");
-					}
-					System.out.println("Crispy flour material " + s + " changed!");
+					changeCrispyFlourMaterial(list[i]);
 				}
 				break;
 			}
 		}
+	}
+
+	public static void changeMeatMaterial(Material material) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("""
+						Choose property to change:
+						1. Cost
+						2. Weight
+						Enter your choice:""");
+		int choice = input.nextInt();
+		String s = "";
+		switch (choice) {
+			case 1:
+				System.out.print("Enter new cost per kg (thousand VND): ");
+				int newCost = input.nextInt();
+				material.setCost(newCost);
+				s = "Cost";
+				break;
+			case 2:
+				System.out.print("Enter new weight (kg): ");
+				double newWeight = input.nextDouble();
+				((Meat) material).setWeight(newWeight);
+				s = "Weight";
+				break;
+			default:
+				System.out.println("Not a choice!");
+		}
+		System.out.println("Meet material " + s + " changed!");
+	}
+
+	public static void changeCrispyFlourMaterial(Material material) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("""
+						Choose property to change:
+						1. Cost
+						2. Quantity
+						Enter your choice:""");
+		int choice = input.nextInt();
+		String s = "";
+		switch (choice) {
+			case 1:
+				System.out.print("Enter new cost per pack (thousand VND): ");
+				int newCost = input.nextInt();
+				material.setCost(newCost);
+				s = "Cost";
+				break;
+			case 2:
+				System.out.print("Enter new quantity: ");
+				int newQuantity = input.nextInt();
+				((CrispyFlour) material).setQuantity(newQuantity);
+				s = "Quantity";
+				break;
+			default:
+				System.out.println("Not a choice!");
+		}
+		System.out.println("Crispy flour material " + s + " changed!");
 	}
 
 	public static void deleteMaterial(Material[] list) {
