@@ -2,119 +2,147 @@ package control;
 
 import model.*;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
-public class Manage {
+public class MaterialManager {
 	public static double getMoneySum(Material[] list) {
-		int n = getNumberOfElements(list);
 		double sum = 0;
-		for (int i = 0; i < n; i++) {
-			sum += list[i].getRealMoney();
+		for (Material material : list) {
+			sum += material.getRealMoney();
 		}
 		return Math.round(sum * 100000.0) / 100.0;
 	}
 
 	public static void printSortedMaterials(Material[] list) {
-		int n = getNumberOfElements(list);
-		Material[] no_null_list = new Material[n];
-		System.arraycopy(list, 0, no_null_list, 0, n);
-
-		Arrays.sort(no_null_list, new MaterialComparator());
-		for (Material item : no_null_list) {
+		// sort list
+		for (int i = 0; i < list.length - 1; i++) {
+			int maxCost = list[i].getCost();
+			int index = i;
+			for (int j = i + 1; j < list.length; j++) {
+				if (list[j].getCost() > maxCost) {
+					maxCost = list[j].getCost();
+					index = j;
+				}
+			}
+			if (index != i) {
+				Material temp = list[i];
+				list[i] = list[index];
+				list[index] = temp;
+			}
+		}
+		// print sorted materials
+		for (Material item : list) {
 			System.out.println("\t" + item);
 		}
 	}
 
 	public static double getTotalDiscount(Material[] list) {
-		int n = getNumberOfElements(list);
 		double sum = 0;
-		for (int i = 0; i < n; i++) {
-			sum += list[i].getAmount() - list[i].getRealMoney();
+		for (Material material : list) {
+			sum += material.getAmount() - material.getRealMoney();
 		}
 		return Math.round(sum * 100000.0) / 100.0;
 	}
 
-	public static int getNumberOfElements(Material[] list) {
-		int n = 0;
-		for (Material item : list) {
-			if (item != null) {
-				n++;
-			} else {
-				break;
-			}
+	public static Material[] addNewMaterial(Material[] list) {
+		String kind = inputMaterialKind();
+		if (kind.equals("Meat")) {
+			return addNewMeat(list);
+		} else if (kind.equals("Crispy Flour")) {
+			return addNewFlour(list);
 		}
-		return n;
+		return list;
 	}
 
-	public static void addNewMaterial(Material[] list) {
-		int n = getNumberOfElements(list);
+	public static String inputMaterialKind() {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter kind of material (Meat/Crispy Flour): ");
-		String kind = input.nextLine();
-
-		if (kind.equals("Meat")) {
-			addNewMeatMaterial(list, n);
-		} else if (kind.equals("Crispy Flour")) {
-			addNewCrispyFlourMaterial(list, n);
-		}
+		return input.nextLine();
 	}
 
-	public static void addNewMeatMaterial(Material[] list, int n) {
+	public static Material[] addNewMeat(Material[] list) {
+		Meat newMeat = inputNewMeat();
+		int n = list.length;
+		Material[] newList = new Material[n + 1];
+
+		for (int i = 0; i < n; i++) {
+			newList[i] = list[i];
+		}
+		newList[n] = newMeat;
+
+		System.out.println("New meat material: " + newList[n].getName() + " added!");
+		return newList;
+	}
+
+	public static Meat inputNewMeat() {
 		Scanner input = new Scanner(System.in);
-		System.out.print("\tEnter id: ");
+		System.out.print("\tEnter ID: ");
 		String id = input.nextLine();
 		System.out.print("\tEnter name: ");
 		String name = input.nextLine();
 		System.out.print("\tEnter manufacturing date (YYYY-MM-DD): ");
-		String date = input.next();
+		String date = input.nextLine();
 		System.out.print("\tEnter cost per kg (thousand VND): ");
 		int cost = input.nextInt();
 		System.out.print("\tEnter weight (kg): ");
 		double weight = input.nextDouble();
 
-		list[n] = new Meat(id, name, date, cost, weight);
-		System.out.println("New meat material: " + list[n].getName() + " added!");
+		return new Meat(id, name, date, cost, weight);
 	}
 
-	public static void addNewCrispyFlourMaterial(Material[] list, int n) {
+	public static Material[] addNewFlour(Material[] list) {
+		CrispyFlour flour = inputNewFlour();
+		int n = list.length;
+		Material[] newList = new Material[n + 1];
+
+		for (int i = 0; i < n; i++) {
+			newList[i] = list[i];
+		}
+		newList[n] = flour;
+
+		System.out.println("New crispy flour material: " + newList[n].getName() + " added!");
+		return newList;
+	}
+
+	public static CrispyFlour inputNewFlour() {
 		Scanner input = new Scanner(System.in);
-		System.out.print("\tEnter id: ");
+		System.out.print("\tEnter ID: ");
 		String id = input.nextLine();
 		System.out.print("\tEnter name: ");
 		String name = input.nextLine();
 		System.out.print("\tEnter manufacturing date (YYYY-MM-DD): ");
-		String date = input.next();
+		String date = input.nextLine();
 		System.out.print("\tEnter cost per pack (thousand VND): ");
 		int cost = input.nextInt();
 		System.out.print("\tEnter quantity: ");
 		int quantity = input.nextInt();
 
-		list[n] = new CrispyFlour(id, name, date, cost, quantity);
-		System.out.println("New crispy flour material: " + list[n].getName() + " added!");
+		return new CrispyFlour(id, name, date, cost, quantity);
 	}
 
 	public static void changeMaterial(Material[] list) {
-		int n = getNumberOfElements(list);
-		Scanner input = new Scanner(System.in);
-		System.out.print("Enter id of material you want to change: ");
-		String id = input.nextLine();
-
-		for (int i = 0; i < n; i++) {
+		String id = inputID();
+		for (int i = 0; i < list.length; i++) {
 			if (list[i].getId().equals(id)) {
 				System.out.println(list[i]);
 
 				if (list[i] instanceof Meat) {
-					changeMeatMaterial(list[i]);
+					changeMeat(list[i]);
 				} else if (list[i] instanceof CrispyFlour) {
-					changeCrispyFlourMaterial(list[i]);
+					changeFlour(list[i]);
 				}
 				break;
 			}
 		}
 	}
 
-	public static void changeMeatMaterial(Material material) {
+	public static String inputID() {
+		Scanner input = new Scanner(System.in);
+		System.out.print("Enter ID of material: ");
+		return input.nextLine();
+	}
+
+	public static void changeMeat(Material material) {
 		Scanner input = new Scanner(System.in);
 		System.out.println("""
 						Choose property to change:
@@ -142,7 +170,7 @@ public class Manage {
 		System.out.println("Meet material " + s + " changed!");
 	}
 
-	public static void changeCrispyFlourMaterial(Material material) {
+	public static void changeFlour(Material material) {
 		Scanner input = new Scanner(System.in);
 		System.out.println("""
 						Choose property to change:
@@ -170,28 +198,29 @@ public class Manage {
 		System.out.println("Crispy flour material " + s + " changed!");
 	}
 
-	public static void deleteMaterial(Material[] list) {
-		Scanner input = new Scanner(System.in);
-		System.out.print("Enter id of material you want to delete: ");
-		String id = input.nextLine();
-
-		int n = getNumberOfElements(list);
+	public static Material[] deleteMaterial(Material[] list) {
+		String id = inputID();
+		int n = list.length;
+		Material[] newList = new Material[n - 1];
 		for (int i = 0; i < n; i++) {
 			if (list[i].getId().equals(id)) {
-				for (int j = i; j < n; j++) {
-					list[j] = list[j + 1];
+				for (int j = 0; j < i; j++) {
+					newList[j] = list[j];
+				}
+				for (int j = i; j < n - 1; j++) {
+					newList[j] = list[j + 1];
 				}
 				break;
 			}
 		}
 		System.out.println("Material " + id + " deleted!");
+		return newList;
 	}
 
 	public static void printMaterials(Material[] list) {
-		int n = getNumberOfElements(list);
 		System.out.println("Materials in the list:");
-		for (int i = 0; i < n; i++) {
-			System.out.println("\t" + list[i]);
+		for (Material material : list) {
+			System.out.println("\t" + material);
 		}
 	}
 }

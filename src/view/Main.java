@@ -1,13 +1,13 @@
 package view;
 
 import model.*;
-import control.Manage;
+import control.MaterialManager;
 
 import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		Material[] list = new Material[50];
+		Material[] list = new Material[10];
 		list[0] = new CrispyFlour("001", "Aji-Quick", "2024-03-04", 123, 3);
 		list[1] = new CrispyFlour("002", "Meizan", "2023-04-05", 45, 4);
 		list[2] = new CrispyFlour("003", "Tai Ky", "2024-05-06", 110, 5);
@@ -19,10 +19,10 @@ public class Main {
 		list[8] = new Meat("009", "Fish", "2024-10-09", 120, 5);
 		list[9] = new Meat("010", "Kobe beef", "2024-10-17", 300, 1);
 
-		System.out.println("\nTotal money for materials: " + Manage.getMoneySum(list) + " VND");
+		System.out.println("\nTotal money for materials: " + MaterialManager.getMoneySum(list) + " VND");
 		System.out.println("\nList of materials sorted descending based on cost:");
-		Manage.printSortedMaterials(list);
-		System.out.println("\nTotal discounted money: " + Manage.getTotalDiscount(list) + " VND");
+		MaterialManager.printSortedMaterials(list);
+		System.out.println("\nTotal discounted money: " + MaterialManager.getTotalDiscount(list) + " VND");
 
 		Scanner input = new Scanner(System.in);
 		int choice;
@@ -38,16 +38,16 @@ public class Main {
 			choice = input.nextInt();
 			switch (choice) {
 				case 1:
-					Manage.addNewMaterial(list);
+					list = MaterialManager.addNewMaterial(list);
 					break;
 				case 2:
-					Manage.changeMaterial(list);
+					MaterialManager.changeMaterial(list);
 					break;
 				case 3:
-					Manage.deleteMaterial(list);
+					list = MaterialManager.deleteMaterial(list);
 					break;
 				case 4:
-					Manage.printMaterials(list);
+					MaterialManager.printMaterials(list);
 					break;
 				case 0:
 					System.exit(0);
