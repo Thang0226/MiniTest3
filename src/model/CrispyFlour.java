@@ -35,6 +35,7 @@ public class CrispyFlour extends Material {
 
 	@Override
 	public String toString() {
-		return "CrispyFlour - " + super.toString() + " - " + super.getCost() + ",000 VND/pack";
+		return "Crispy Flour - " + super.toString() + " - " + super.getCost() + ",000 VND/pack - "
+				+ this.getQuantity() + " pack";
 	}
 }

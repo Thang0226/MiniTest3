@@ -35,6 +35,7 @@ public class Meat extends Material {
 
 	@Override
 	public String toString() {
-		return "Meat        - " + super.toString() + " - " + super.getCost() + ",000 VND/kg";
+		return "Meat         - " + super.toString() + " - " + super.getCost() + ",000 VND/kg - "
+				+ this.getWeight() + "kg";
 	}
 }
